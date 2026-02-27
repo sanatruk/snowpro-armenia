@@ -1,65 +1,409 @@
-import Image from "next/image";
+import Link from "next/link";
+import { resorts } from "@/data/resorts";
+import { getFeaturedInstructors } from "@/data/instructors";
+import { ResortCard } from "@/components/resort-card";
+import { InstructorCard } from "@/components/instructor-card";
+
+function MountainSVG() {
+  return (
+    <svg
+      className="absolute inset-x-0 bottom-0 h-32 sm:h-48 text-mountain"
+      viewBox="0 0 1440 200"
+      preserveAspectRatio="none"
+      fill="currentColor"
+    >
+      <polygon points="0,200 0,120 120,60 240,100 360,40 480,80 600,30 720,70 840,20 960,60 1080,35 1200,75 1320,45 1440,90 1440,200" />
+    </svg>
+  );
+}
+
+function HeroSection() {
+  return (
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+      {/* Background layers */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-950 via-slate-900 to-mountain" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.12),transparent_60%)]" />
+
+      {/* Decorative circles */}
+      <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-ice/5 blur-3xl" />
+      <div className="absolute bottom-40 right-20 h-96 w-96 rounded-full bg-purple-500/5 blur-3xl" />
+
+      {/* Snow particles (decorative dots) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white/20"
+            style={{
+              width: `${2 + Math.random() * 3}px`,
+              height: `${2 + Math.random() * 3}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 3}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      <MountainSVG />
+
+      {/* Content */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-32">
+        <div className="max-w-3xl">
+          <div className="animate-fade-in-up">
+            <p className="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-1.5 text-sm font-medium text-ice border border-ice/20">
+              <span className="h-1.5 w-1.5 rounded-full bg-ice animate-pulse" />
+              Season 2025–2026 is live
+            </p>
+          </div>
+
+          <h1 className="mt-6 font-display text-5xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-7xl animate-fade-in-up stagger-2">
+            Ride Armenia&apos;s{" "}
+            <span className="shimmer-text">mountains</span>
+            <br />
+            with a pro
+          </h1>
+
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-snow-300 animate-fade-in-up stagger-3">
+            Book certified ski and snowboard instructors at Tsaghkadzor, MyLer,
+            and Jermuk. Direct contact, real locals, no middlemen.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row animate-fade-in-up stagger-4">
+            <Link
+              href="/instructors"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-ice px-6 py-3.5 text-base font-semibold text-mountain transition-all hover:bg-ice-light hover:shadow-lg hover:shadow-ice/20 hover:-translate-y-0.5"
+            >
+              Find Your Instructor
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 px-6 py-3.5 text-base font-medium text-snow-300 transition-all hover:bg-white/5 hover:text-snow"
+            >
+              How It Works
+            </Link>
+          </div>
+
+          {/* Quick stats */}
+          <div className="mt-12 flex gap-8 animate-fade-in-up stagger-5">
+            <div>
+              <p className="text-3xl font-bold text-snow">3</p>
+              <p className="text-sm text-mountain-600">Resorts</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-snow">6+</p>
+              <p className="text-sm text-mountain-600">Pro Instructors</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-snow">54km</p>
+              <p className="text-sm text-mountain-600">Total Slopes</p>
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-snow">2,850m</p>
+              <p className="text-sm text-mountain-600">Peak Elevation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ResortsSection() {
+  const mainResorts = resorts.filter((r) => r.slug !== "jermuk");
+  return (
+    <section className="relative py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">
+            Armenia&apos;s Premier Resorts
+          </h2>
+          <p className="mt-3 text-lg text-snow-300">
+            Two world-class mountains, one hour from Yerevan
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {mainResorts.map((resort) => (
+            <ResortCard key={resort.slug} resort={resort} />
+          ))}
+        </div>
+
+        {/* Jermuk teaser */}
+        <div className="mt-6">
+          <Link
+            href="/resorts/jermuk"
+            className="group block rounded-2xl border border-white/5 bg-mountain-800/30 p-6 transition-all hover:bg-mountain-800/50"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-display text-xl font-semibold text-snow group-hover:text-ice transition-colors">
+                  Jermuk
+                </h3>
+                <p className="mt-1 text-sm text-snow-300">
+                  Beginner-friendly slopes + famous hot springs. The perfect
+                  family combo.
+                </p>
+              </div>
+              <div className="flex items-center gap-3 text-snow-300">
+                <span className="text-sm">3km slopes</span>
+                <svg
+                  className="h-5 w-5 text-ice group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function InstructorsSection() {
+  const featured = getFeaturedInstructors();
+  return (
+    <section className="relative py-24 bg-gradient-to-b from-mountain via-mountain-800/50 to-mountain">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between">
+          <div>
+            <h2 className="font-display text-3xl font-bold sm:text-4xl">
+              Featured Instructors
+            </h2>
+            <p className="mt-3 text-lg text-snow-300">
+              Certified pros who know every run
+            </p>
+          </div>
+          <Link
+            href="/instructors"
+            className="hidden sm:flex items-center gap-1 text-sm font-medium text-ice hover:text-ice-light transition-colors"
+          >
+            View all instructors
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+              />
+            </svg>
+          </Link>
+        </div>
+
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {featured.map((instructor) => (
+            <InstructorCard key={instructor.id} instructor={instructor} />
+          ))}
+        </div>
+
+        <div className="mt-8 text-center sm:hidden">
+          <Link
+            href="/instructors"
+            className="inline-flex items-center gap-1 text-sm font-medium text-ice"
+          >
+            View all instructors
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+              />
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HowItWorksSection() {
+  const steps = [
+    {
+      number: "01",
+      title: "Choose Your Resort",
+      description:
+        "Pick from Tsaghkadzor, MyLer, or Jermuk based on your level and preferences.",
+      icon: (
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={1.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      number: "02",
+      title: "Pick Your Instructor",
+      description:
+        "Browse profiles, check specialties and languages, find the perfect match.",
+      icon: (
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={1.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+          />
+        </svg>
+      ),
+    },
+    {
+      number: "03",
+      title: "Book Directly",
+      description:
+        "Message them on WhatsApp or Telegram. No middlemen, no booking fees.",
+      icon: (
+        <svg
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={1.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+          />
+        </svg>
+      ),
+    },
+  ];
+
+  return (
+    <section className="relative py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">
+            How It Works
+          </h2>
+          <p className="mt-3 text-lg text-snow-300">
+            From zero to shredding in three simple steps
+          </p>
+        </div>
+
+        <div className="mt-16 grid gap-8 md:grid-cols-3">
+          {steps.map((step) => (
+            <div key={step.number} className="relative text-center">
+              {/* Number */}
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-ice/10 text-ice">
+                {step.icon}
+              </div>
+              <p className="mt-4 font-display text-sm font-medium text-ice/60">
+                {step.number}
+              </p>
+              <h3 className="mt-2 font-display text-xl font-semibold">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-snow-300">
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CTASection() {
+  return (
+    <section className="relative py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ice-dark via-blue-600 to-purple-700 p-12 sm:p-16">
+          {/* Decorative elements */}
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+          <div className="absolute -left-10 -bottom-10 h-48 w-48 rounded-full bg-purple-500/20 blur-3xl" />
+
+          <div className="relative z-10 max-w-2xl">
+            <h2 className="font-display text-3xl font-bold sm:text-4xl">
+              Ready to hit the slopes?
+            </h2>
+            <p className="mt-4 text-lg text-white/80">
+              The season runs mid-December through April. Don&apos;t wait — the
+              best instructors book up fast during peak season (January–February).
+            </p>
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/instructors"
+                className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3.5 text-base font-semibold text-mountain transition-all hover:bg-snow-100 hover:shadow-lg"
+              >
+                Browse Instructors
+              </Link>
+              <Link
+                href="/about#faq"
+                className="inline-flex items-center justify-center rounded-xl border border-white/30 px-6 py-3.5 text-base font-medium text-white transition-all hover:bg-white/10"
+              >
+                Read FAQ
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <>
+      <HeroSection />
+      <ResortsSection />
+      <InstructorsSection />
+      <HowItWorksSection />
+      <CTASection />
+    </>
   );
 }

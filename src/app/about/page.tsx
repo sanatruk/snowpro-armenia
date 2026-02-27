@@ -1,0 +1,271 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "About & FAQ",
+  description:
+    "Learn about SnowPro Armenia — your guide to booking ski and snowboard instructors at Armenian resorts.",
+};
+
+const faqs = [
+  {
+    question: "When is ski season in Armenia?",
+    answer:
+      "The main season runs from mid-December through the end of March. Upper slopes at Tsaghkadzor and MyLer can stay rideable into April. MyLer has artificial snowmaking, so coverage is more consistent there. Peak conditions are January through February.",
+  },
+  {
+    question: "How much do lessons cost?",
+    answer:
+      "Private lessons range from 10,000 to 20,000 AMD per hour (~$25–50 USD) depending on the instructor's experience and certifications. Group rates are cheaper per person. Prices are set by individual instructors — there are no booking fees from SnowPro.",
+  },
+  {
+    question: "Do I need my own equipment?",
+    answer:
+      "No — both Tsaghkadzor and MyLer have full equipment rental on-site (skis, snowboards, boots, helmets, goggles). Rental prices range from 3,000 to 10,000 AMD depending on the resort and equipment type. Your instructor can help you get sized.",
+  },
+  {
+    question: "How do I get to the resorts from Yerevan?",
+    answer:
+      "Tsaghkadzor is about 50 minutes from Yerevan by car. MyLer is about 1 hour 15 minutes. The most common options are: taxi (8,000–15,000 AMD one way), rental car, or organized shuttle services that run during peak season. Many hotels in the resort areas offer transfers.",
+  },
+  {
+    question: "What skill levels do instructors teach?",
+    answer:
+      "Our instructors cover all levels — from complete beginners who've never seen snow, to advanced riders looking to perfect their carving or hit the park. Each instructor's profile lists which levels they teach. If you're unsure, message them and they'll recommend the right approach.",
+  },
+  {
+    question: "Can I book in advance?",
+    answer:
+      "Yes, and we recommend it — especially during peak season (January–February) and holidays. Contact your chosen instructor via WhatsApp or Telegram to confirm availability and schedule your session. Most instructors are flexible with timing.",
+  },
+  {
+    question: "Is snowboarding popular in Armenia?",
+    answer:
+      "It's growing fast. Skiing has a longer history (Soviet-era training), but snowboarding has become very popular in the last decade, especially at MyLer which was designed with boarders in mind. Several of our instructors specialize in snowboarding.",
+  },
+  {
+    question: "What should I bring?",
+    answer:
+      "Warm, waterproof layers (jacket and pants), gloves, sunglasses or goggles, and sunscreen (the mountain sun is strong). Everything else — skis, boots, helmet — can be rented on-site. Bring cash in AMD for smaller purchases, though cards are accepted at most resort facilities.",
+  },
+] as const;
+
+function FAQItem({
+  question,
+  answer,
+}: {
+  readonly question: string;
+  readonly answer: string;
+}) {
+  return (
+    <details className="group rounded-xl border border-white/5 bg-mountain-800/30 transition-colors hover:bg-mountain-800/50">
+      <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-base font-medium text-snow list-none">
+        {question}
+        <svg
+          className="h-5 w-5 shrink-0 text-mountain-600 transition-transform group-open:rotate-45"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4.5v15m7.5-7.5h-15"
+          />
+        </svg>
+      </summary>
+      <div className="px-6 pb-4">
+        <p className="text-sm leading-relaxed text-snow-300">{answer}</p>
+      </div>
+    </details>
+  );
+}
+
+export default function AboutPage() {
+  return (
+    <>
+      {/* Hero */}
+      <section className="relative pt-32 pb-16">
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-950/50 to-mountain" />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h1 className="font-display text-4xl font-bold sm:text-5xl animate-fade-in-up">
+            About SnowPro
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg text-snow-300 animate-fade-in-up stagger-2">
+            Connecting you with Armenia&apos;s best ski and snowboard
+            instructors — directly, with zero booking fees.
+          </p>
+        </div>
+      </section>
+
+      {/* About content */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <div>
+              <h2 className="font-display text-2xl font-bold">
+                Why SnowPro?
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-snow-300">
+                <p>
+                  Armenia&apos;s ski scene is booming. With Tsaghkadzor&apos;s
+                  storied slopes and MyLer&apos;s brand-new facilities, there
+                  are now two world-class resorts within an hour of Yerevan.
+                </p>
+                <p>
+                  But booking an instructor? That&apos;s still stuck in the
+                  dark ages. Phone calls. Instagram DMs. WhatsApp numbers
+                  scribbled on napkins. Walking up to random people at the base
+                  of the lift and hoping for the best.
+                </p>
+                <p>
+                  SnowPro changes that. We curate a roster of verified,
+                  experienced instructors across all Armenian resorts. Browse
+                  their profiles, check their specialties and languages, and
+                  message them directly. No middlemen, no booking fees, no
+                  surprises.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="font-display text-2xl font-bold">
+                For Instructors
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-snow-300">
+                <p>
+                  Are you a ski or snowboard instructor working at an Armenian
+                  resort? We&apos;d love to feature you on SnowPro.
+                </p>
+                <p>
+                  Listing is completely free. We don&apos;t take a cut of your
+                  earnings. You set your own prices, manage your own schedule,
+                  and communicate directly with clients.
+                </p>
+                <p>
+                  All we ask is that you&apos;re experienced, professional, and
+                  passionate about sharing the mountain with others.
+                </p>
+              </div>
+              <a
+                href="mailto:hello@snowpro.am?subject=Instructor%20Listing%20Request"
+                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-ice px-5 py-3 text-sm font-semibold text-mountain transition-all hover:bg-ice-light hover:shadow-lg hover:shadow-ice/20"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                  />
+                </svg>
+                Get Listed — It&apos;s Free
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-16 border-t border-white/5">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="font-display text-3xl font-bold">
+              Frequently Asked Questions
+            </h2>
+            <p className="mt-3 text-base text-snow-300">
+              Everything you need to know before hitting the slopes
+            </p>
+          </div>
+
+          <div className="mt-10 space-y-3">
+            {faqs.map((faq) => (
+              <FAQItem
+                key={faq.question}
+                question={faq.question}
+                answer={faq.answer}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact section */}
+      <section className="py-16 border-t border-white/5">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-display text-2xl font-bold">Get in Touch</h2>
+          <p className="mt-3 text-base text-snow-300">
+            Have a question? Want to list as an instructor? We&apos;d love to
+            hear from you.
+          </p>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <a
+              href="mailto:hello@snowpro.am"
+              className="rounded-xl border border-white/5 bg-mountain-800/30 p-6 transition-colors hover:bg-mountain-800/50 group"
+            >
+              <svg
+                className="mx-auto h-8 w-8 text-ice"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                />
+              </svg>
+              <p className="mt-3 text-sm font-medium text-snow group-hover:text-ice transition-colors">
+                hello@snowpro.am
+              </p>
+            </a>
+
+            <a
+              href="https://wa.me/37455000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-white/5 bg-mountain-800/30 p-6 transition-colors hover:bg-mountain-800/50 group"
+            >
+              <svg
+                className="mx-auto h-8 w-8 text-green-400"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
+              </svg>
+              <p className="mt-3 text-sm font-medium text-snow group-hover:text-green-400 transition-colors">
+                WhatsApp
+              </p>
+            </a>
+
+            <a
+              href="https://t.me/snowpro_armenia"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-white/5 bg-mountain-800/30 p-6 transition-colors hover:bg-mountain-800/50 group"
+            >
+              <svg
+                className="mx-auto h-8 w-8 text-blue-400"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+              </svg>
+              <p className="mt-3 text-sm font-medium text-snow group-hover:text-blue-400 transition-colors">
+                Telegram
+              </p>
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
