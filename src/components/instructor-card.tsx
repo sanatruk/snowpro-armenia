@@ -72,9 +72,22 @@ export function InstructorCard({
           </div>
         </div>
 
-        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-snow-300">
-          {instructor.bio}
+        {/* Headline */}
+        <p className="mt-2 text-sm font-medium text-ice/80 italic">
+          &ldquo;{instructor.headline}&rdquo;
         </p>
+
+        {/* Teaching style tags */}
+        <div className="mt-2 flex flex-wrap gap-1">
+          {instructor.teachingStyle.map((style) => (
+            <span
+              key={style}
+              className="rounded-md bg-ice/10 px-1.5 py-0.5 text-[10px] font-medium text-ice/70"
+            >
+              {style}
+            </span>
+          ))}
+        </div>
 
         {/* Resorts */}
         <div className="mt-3 flex flex-wrap gap-1.5">

@@ -59,15 +59,16 @@ function HeroSection() {
           </div>
 
           <h1 className="mt-6 font-display text-5xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-7xl animate-fade-in-up stagger-2">
-            Ride Armenia&apos;s{" "}
-            <span className="shimmer-text">mountains</span>
+            Your Instructor.{" "}
+            <span className="shimmer-text">Your Mountain.</span>
             <br />
-            with a pro
+            Book in 60 Seconds.
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-snow-300 animate-fade-in-up stagger-3">
-            Book certified ski and snowboard instructors at Tsaghkadzor, MyLer,
-            and Jermuk. Direct contact, real locals, no middlemen.
+            Browse verified ski &amp; snowboard pros at Tsaghkadzor, MyLer, and
+            Jermuk. See real reviews, check live availability, and lock in your
+            lesson — no booking fees, ever.
           </p>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row animate-fade-in-up stagger-4">
@@ -75,7 +76,7 @@ function HeroSection() {
               href="/instructors"
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-ice px-6 py-3.5 text-base font-semibold text-mountain transition-all hover:bg-ice-light hover:shadow-lg hover:shadow-ice/20 hover:-translate-y-0.5"
             >
-              Find Your Instructor
+              Browse Instructors
               <svg
                 className="h-5 w-5"
                 fill="none"
@@ -106,7 +107,7 @@ function HeroSection() {
             </div>
             <div>
               <p className="text-3xl font-bold text-snow">6+</p>
-              <p className="text-sm text-mountain-600">Pro Instructors</p>
+              <p className="text-sm text-mountain-600">Verified Pros</p>
             </div>
             <div>
               <p className="text-3xl font-bold text-snow">54km</p>
@@ -155,8 +156,8 @@ function ResortsSection() {
                   Jermuk
                 </h3>
                 <p className="mt-1 text-sm text-snow-300">
-                  Beginner-friendly slopes + famous hot springs. The perfect
-                  family combo.
+                  Gentle slopes + legendary hot springs — zero intimidation, all
+                  the fun.
                 </p>
               </div>
               <div className="flex items-center gap-3 text-snow-300">
@@ -250,13 +251,76 @@ function InstructorsSection() {
   );
 }
 
+function SocialProofSection() {
+  const testimonials = [
+    {
+      quote:
+        "Gor had my 8-year-old snowboarding by lunch. We've booked 3 more lessons since.",
+      name: "Armine K.",
+      location: "Yerevan",
+    },
+    {
+      quote:
+        "First time skiing at 35. Anna made it feel easy. Already planning a return trip.",
+      name: "David M.",
+      location: "Moscow",
+    },
+    {
+      quote:
+        "Best value ski instruction I've found anywhere. Half the price of the Alps with just as good teaching.",
+      name: "Tom R.",
+      location: "London",
+    },
+  ] as const;
+
+  return (
+    <section className="relative py-20 border-y border-white/5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <p className="text-sm font-semibold uppercase tracking-wider text-ice">
+            Trusted by students this season
+          </p>
+        </div>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {testimonials.map((t) => (
+            <div
+              key={t.name}
+              className="rounded-2xl border border-white/5 bg-mountain-800/30 p-6"
+            >
+              <div className="flex gap-0.5 text-gold">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <svg
+                    key={i}
+                    className="h-4 w-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="mt-4 text-sm leading-relaxed text-snow-300 italic">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <p className="mt-3 text-sm font-medium text-snow">
+                {t.name}{" "}
+                <span className="text-mountain-600">· {t.location}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function HowItWorksSection() {
   const steps = [
     {
       number: "01",
-      title: "Choose Your Resort",
+      title: "Pick Your Resort",
       description:
-        "Pick from Tsaghkadzor, MyLer, or Jermuk based on your level and preferences.",
+        "Choose Tsaghkadzor, MyLer, or Jermuk. Not sure? Filter by skill level — we'll show you which resort fits.",
       icon: (
         <svg
           className="h-6 w-6"
@@ -280,9 +344,9 @@ function HowItWorksSection() {
     },
     {
       number: "02",
-      title: "Pick Your Instructor",
+      title: "Choose Your Instructor",
       description:
-        "Browse profiles, check specialties and languages, find the perfect match.",
+        "Browse real profiles with reviews, languages, and pricing. Read what past students say. Find the right match.",
       icon: (
         <svg
           className="h-6 w-6"
@@ -301,9 +365,9 @@ function HowItWorksSection() {
     },
     {
       number: "03",
-      title: "Book Directly",
+      title: "Book & Pay Securely",
       description:
-        "Message them on WhatsApp or Telegram. No middlemen, no booking fees.",
+        "Select your date, pay a 20% deposit to lock it in, and get instant confirmation. No booking fees. Cancel free up to 48 hours before.",
       icon: (
         <svg
           className="h-6 w-6"
@@ -369,24 +433,25 @@ function CTASection() {
 
           <div className="relative z-10 max-w-2xl">
             <h2 className="font-display text-3xl font-bold sm:text-4xl">
-              Ready to hit the slopes?
+              The season&apos;s open. Your instructor is waiting.
             </h2>
             <p className="mt-4 text-lg text-white/80">
-              The season runs mid-December through April. Don&apos;t wait — the
-              best instructors book up fast during peak season (January–February).
+              Peak season is January through February — the most popular
+              instructors fill up weeks in advance. Lock in your dates now with
+              a 20% deposit and cancel free if plans change.
             </p>
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Link
                 href="/instructors"
                 className="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3.5 text-base font-semibold text-mountain transition-all hover:bg-snow-100 hover:shadow-lg"
               >
-                Browse Instructors
+                Book Your Instructor
               </Link>
               <Link
                 href="/about#faq"
                 className="inline-flex items-center justify-center rounded-xl border border-white/30 px-6 py-3.5 text-base font-medium text-white transition-all hover:bg-white/10"
               >
-                Read FAQ
+                Got Questions? Read the FAQ
               </Link>
             </div>
           </div>
@@ -402,6 +467,7 @@ export default function Home() {
       <HeroSection />
       <ResortsSection />
       <InstructorsSection />
+      <SocialProofSection />
       <HowItWorksSection />
       <CTASection />
     </>

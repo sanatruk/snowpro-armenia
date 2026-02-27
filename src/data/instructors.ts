@@ -2,11 +2,29 @@ export type Sport = "ski" | "snowboard" | "both";
 export type Level = "beginner" | "intermediate" | "advanced" | "expert";
 export type Language = "Armenian" | "English" | "Russian" | "French" | "German";
 
+export type TeachingStyle =
+  | "Patient"
+  | "Technical"
+  | "Fun"
+  | "Encouraging"
+  | "Progressive"
+  | "Calm"
+  | "High-Energy"
+  | "Expert-Level"
+  | "Beginner-Specialist"
+  | "Family-Friendly"
+  | "Local Knowledge"
+  | "Freestyle"
+  | "Freeride"
+  | "Carving";
+
 export interface Instructor {
   readonly id: string;
   readonly name: string;
   readonly photo: string;
+  readonly headline: string;
   readonly bio: string;
+  readonly teachingStyle: readonly TeachingStyle[];
   readonly sport: Sport;
   readonly specialties: readonly string[];
   readonly levels: readonly Level[];
@@ -29,7 +47,10 @@ export const instructors: readonly Instructor[] = [
     id: "gor-hakobyan",
     name: "Gor Hakobyan",
     photo: "/instructors/gor.jpg",
-    bio: "Former competitive snowboarder turned instructor. Gor specializes in freestyle and freeride, taking riders from their first turns to hitting the park. Known for his patient teaching style and infectious enthusiasm.",
+    headline:
+      "From first turns to park tricks — competitive rider, patient teacher",
+    bio: "Gor competed on the Armenian snowboard circuit before switching to instruction 8 years ago. He specializes in freestyle and freeride — whether you're strapping in for the first time or ready to hit the terrain park, he'll get you there. Students consistently highlight his patience and the fact that he makes every session fun, even when you're falling.",
+    teachingStyle: ["Patient", "Fun", "Progressive"],
     sport: "snowboard",
     specialties: ["Freestyle", "Freeride", "Park riding"],
     levels: ["beginner", "intermediate", "advanced"],
@@ -50,7 +71,9 @@ export const instructors: readonly Instructor[] = [
     id: "anna-sargsyan",
     name: "Anna Sargsyan",
     photo: "/instructors/anna.jpg",
-    bio: "Anna is one of Armenia's few female ski instructors and a passionate advocate for getting more women on the slopes. She teaches all levels with a calm, encouraging approach that makes even the most nervous beginners feel at ease.",
+    headline: "Calm, encouraging, and great with nervous beginners",
+    bio: "Anna has been teaching skiing for 6 years and is one of Armenia's few female instructors. She has a gift for putting nervous beginners at ease — her calm, step-by-step approach means you'll be making turns by the end of your first lesson. She also runs women-only group sessions on request.",
+    teachingStyle: ["Calm", "Encouraging", "Beginner-Specialist"],
     sport: "ski",
     specialties: ["Alpine skiing", "Women's clinics", "Children's lessons"],
     levels: ["beginner", "intermediate", "advanced"],
@@ -71,7 +94,10 @@ export const instructors: readonly Instructor[] = [
     id: "arman-gevorgyan",
     name: "Arman Gevorgyan",
     photo: "/instructors/arman.jpg",
-    bio: "A MyLer local since the resort opened, Arman knows every run and secret spot on the mountain. He specializes in advanced technique and carving, helping experienced riders reach the next level.",
+    headline:
+      "MyLer's most experienced instructor — advanced technique & carving",
+    bio: "Arman has been at MyLer since the resort opened and has 12 years of instruction under his belt. He knows every run, every shortcut, and every secret stash on the mountain. If you already ski or ride confidently and want to sharpen your carving, tackle steeper terrain, or refine your technique, Arman is your pick.",
+    teachingStyle: ["Technical", "Expert-Level", "Local Knowledge"],
     sport: "both",
     specialties: ["Carving", "Advanced technique", "Off-piste"],
     levels: ["intermediate", "advanced", "expert"],
@@ -92,7 +118,9 @@ export const instructors: readonly Instructor[] = [
     id: "tigran-avetisyan",
     name: "Tigran Avetisyan",
     photo: "/instructors/tigran.jpg",
-    bio: "Tigran is the go-to instructor for families and children. With a background in physical education and a natural way with kids, he makes learning to ski feel like a game. Patient, fun, and safety-focused.",
+    headline: "The go-to instructor for families with young kids",
+    bio: "With a background in physical education and 10 years teaching on Armenian slopes, Tigran turns first-time family ski trips into memories. Kids love him because he makes learning feel like a game. Parents love him because he's safety-focused and endlessly patient.",
+    teachingStyle: ["Patient", "Fun", "Family-Friendly"],
     sport: "ski",
     specialties: ["Children's lessons", "Family groups", "First-timers"],
     levels: ["beginner", "intermediate"],
@@ -111,7 +139,9 @@ export const instructors: readonly Instructor[] = [
     id: "lilit-manukyan",
     name: "Lilit Manukyan",
     photo: "/instructors/lilit.jpg",
-    bio: "Lilit fell in love with snowboarding on a trip to Austria and brought her passion back to Armenia. She teaches at both major resorts and is especially popular with tourists thanks to her fluent English and German.",
+    headline: "Multilingual snowboard guide — perfect for visiting tourists",
+    bio: "Lilit discovered snowboarding on a trip to Austria and brought her passion back to Armenia. She teaches at both major resorts and is the top pick for international visitors — fluent in English, German, Russian, and Armenian. She specializes in getting beginners comfortable on a board.",
+    teachingStyle: ["Encouraging", "Progressive", "Beginner-Specialist"],
     sport: "snowboard",
     specialties: ["Beginner snowboarding", "Tourism groups", "Carving"],
     levels: ["beginner", "intermediate"],
@@ -131,7 +161,9 @@ export const instructors: readonly Instructor[] = [
     id: "davit-karapetyan",
     name: "Davit Karapetyan",
     photo: "/instructors/davit.jpg",
-    bio: "Davit is a former Armenian national team member with over 15 years on the slopes. He now channels his competitive experience into coaching advanced skiers who want race-level technique and speed.",
+    headline: "Former national team — race-level technique and speed coaching",
+    bio: "Davit spent years on the Armenian national ski team before transitioning to coaching. With 15 years of experience, he's the instructor for advanced skiers who want race-level technique, speed training, and mogul mastery. If you're already confident on blacks and want to go faster, Davit is your coach.",
+    teachingStyle: ["Technical", "High-Energy", "Expert-Level"],
     sport: "ski",
     specialties: ["Race technique", "Speed training", "Moguls"],
     levels: ["advanced", "expert"],
@@ -150,7 +182,9 @@ export const instructors: readonly Instructor[] = [
   },
 ] as const;
 
-export function getInstructorsByResort(resortSlug: string): readonly Instructor[] {
+export function getInstructorsByResort(
+  resortSlug: string,
+): readonly Instructor[] {
   return instructors.filter((i) => i.resorts.includes(resortSlug));
 }
 

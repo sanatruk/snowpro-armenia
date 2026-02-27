@@ -27,10 +27,11 @@ export const resorts: readonly Resort[] = [
   {
     slug: "tsaghkadzor",
     name: "Tsaghkadzor",
-    nameArm: "Ծաղկdelays",
-    tagline: "Armenia's classic mountain — where legends are made",
+    nameArm: "Ծաղկadzor",
+    tagline:
+      "Armenia's flagship resort — 30km of runs, 50 minutes from Yerevan",
     description:
-      "The oldest and largest ski resort in Armenia, built during the Soviet era as an Olympic training base. Tsaghkadzor offers 30km of groomed slopes across all difficulty levels, with stunning views of Mount Ararat on clear days. Home to 27 professional instructors and a well-established ski school.",
+      "The mountain every Armenian skier knows. Seven lifts serving everything from gentle nursery slopes to steep off-piste. Night skiing on weekends. The best instructor selection of any Armenian resort. Built during the Soviet era as an Olympic training base, with stunning views of Mount Ararat on clear days.",
     elevation: { base: 1966, peak: 2819 },
     verticalDrop: 853,
     slopes: "30km",
@@ -60,9 +61,10 @@ export const resorts: readonly Resort[] = [
     slug: "myler",
     name: "MyLer Mountain Resort",
     nameArm: "MailLer",
-    tagline: "The new standard — international quality, Armenian soul",
+    tagline:
+      "Armenia's newest resort — modern lifts, extended season, uncrowded runs",
     description:
-      "Armenia's newest and most modern ski resort, opened in 2021 near Aparan. MyLer features state-of-the-art gondolas, artificial snowmaking across all slopes, and facilities that meet international standards. Rated #1 ski resort in Armenia. Features an Olympic-size ice rink, tubing zones, and helicopter tours.",
+      "Built to international standards with snowmaking that keeps runs open into April. Seven high-speed lifts, zero weekend crowds. The best-kept secret for riders who want quality without the queues. Opened in 2021 near Aparan, MyLer is rated #1 ski resort in Armenia with 10-seater gondolas, an Olympic-size ice rink, and helicopter tours.",
     elevation: { base: 1950, peak: 2850 },
     verticalDrop: 900,
     slopes: "21km",
@@ -93,10 +95,11 @@ export const resorts: readonly Resort[] = [
   {
     slug: "jermuk",
     name: "Jermuk",
-    nameArm: "Cha;ermu",
-    tagline: "Ski by morning, hot springs by afternoon",
+    nameArm: " Джерmuk",
+    tagline:
+      "Gentle slopes + legendary hot springs — the perfect first-timer destination",
     description:
-      "A charming small resort in Armenia's famous spa town. Perfect for families and beginners who want to combine gentle skiing with Jermuk's legendary mineral thermal baths. The slopes are short but the experience is unforgettable.",
+      "Small, friendly, and zero intimidation factor. Three kilometers of wide-open beginner terrain, then hot springs to reward yourself after. Ideal for families with kids and adults trying skiing for the first time. Jermuk's legendary mineral thermal baths are just minutes from the slopes.",
     elevation: { base: 2100, peak: 2438 },
     verticalDrop: 338,
     slopes: "3km",
