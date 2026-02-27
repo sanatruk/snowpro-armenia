@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { Availability } from "@/types/database";
+import { formatTime, calculateSlotPrice } from "@/lib/time";
 
 interface Props {
   readonly slots: readonly Availability[];
@@ -38,25 +39,6 @@ function formatDayLabel(date: Date): string {
   });
 }
 
-function formatTime(time: string): string {
-  const [h, m] = time.split(":");
-  const hour = parseInt(h);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const display = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-  return `${display}:${m} ${ampm}`;
-}
-
-function calculateSlotPrice(
-  startTime: string,
-  endTime: string,
-  pricePerHour: number,
-): number {
-  const [sh, sm] = startTime.split(":").map(Number);
-  const [eh, em] = endTime.split(":").map(Number);
-  const durationHours = (eh * 60 + em - (sh * 60 + sm)) / 60;
-  return Math.round(pricePerHour * durationHours);
-}
-
 export function AvailabilityCalendar({
   slots,
   pricePerHour,
@@ -84,9 +66,7 @@ export function AvailabilityCalendar({
     for (const [key, daySlots] of map) {
       map.set(
         key,
-        [...daySlots].sort((a, b) =>
-          a.start_time.localeCompare(b.start_time),
-        ),
+        [...daySlots].sort((a, b) => a.start_time.localeCompare(b.start_time)),
       );
     }
     return map;
@@ -158,17 +138,13 @@ export function AvailabilityCalendar({
               {/* Day header */}
               <div
                 className={`mb-2 text-center rounded-lg py-1.5 ${
-                  isToday
-                    ? "bg-ice/10 text-ice"
-                    : "text-snow-300"
+                  isToday ? "bg-ice/10 text-ice" : "text-snow-300"
                 }`}
               >
                 <p className="text-[10px] font-medium uppercase">
                   {day.toLocaleDateString("en-US", { weekday: "short" })}
                 </p>
-                <p className="text-sm font-bold">
-                  {day.getDate()}
-                </p>
+                <p className="text-sm font-bold">{day.getDate()}</p>
               </div>
 
               {/* Time slots */}

@@ -38,26 +38,40 @@ export async function POST(request: NextRequest) {
 
       if (!bookingId) break;
 
+      const paymentIntentId =
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : (session.payment_intent?.id ?? null);
+
       // Update booking to confirmed
-      await db
+      const { error: updateError } = await db
         .from("bookings")
         .update({
           status: "confirmed",
-          stripe_payment_intent_id:
-            typeof session.payment_intent === "string"
-              ? session.payment_intent
-              : (session.payment_intent?.id ?? null),
+          stripe_payment_intent_id: paymentIntentId,
         })
         .eq("id", bookingId);
 
+      if (updateError) {
+        console.error("Failed to confirm booking:", updateError);
+        return NextResponse.json(
+          { error: "Failed to update booking" },
+          { status: 500 },
+        );
+      }
+
       // Record deposit payment
-      await db.from("payments").insert({
+      const { error: paymentError } = await db.from("payments").insert({
         booking_id: bookingId,
         type: "deposit",
         amount: session.amount_total ?? 0,
         currency: session.currency ?? "amd",
-        stripe_id: session.payment_intent as string,
+        stripe_id: paymentIntentId,
       });
+
+      if (paymentError) {
+        console.error("Failed to record payment:", paymentError);
+      }
 
       break;
     }
@@ -69,7 +83,7 @@ export async function POST(request: NextRequest) {
       if (!bookingId) break;
 
       // Cancel booking if checkout expired
-      await db
+      const { error: cancelError } = await db
         .from("bookings")
         .update({
           status: "cancelled",
@@ -77,6 +91,10 @@ export async function POST(request: NextRequest) {
           cancellation_reason: "Payment session expired",
         })
         .eq("id", bookingId);
+
+      if (cancelError) {
+        console.error("Failed to cancel expired booking:", cancelError);
+      }
 
       break;
     }

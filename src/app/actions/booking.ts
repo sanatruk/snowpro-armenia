@@ -8,6 +8,7 @@ import {
   calculatePlatformFee,
 } from "@/lib/stripe";
 import { bookingSchema, cancelBookingSchema } from "@/lib/validations";
+import { calculateSlotPrice } from "@/lib/time";
 import type { Availability, Instructor, Booking } from "@/types/database";
 
 type ActionResult =
@@ -26,12 +27,13 @@ export async function createBooking(input: unknown): Promise<ActionResult> {
   const { availabilityId, instructorId, notes } = parsed.data;
   const db = await createServiceRoleSupabase();
 
-  // Fetch availability slot
+  // Atomically claim the slot — UPDATE with is_booked=false guard prevents double-booking
   const { data: slotRaw, error: slotError } = await db
     .from("availability")
-    .select("*")
+    .update({ is_booked: true })
     .eq("id", availabilityId)
     .eq("is_booked", false)
+    .select()
     .single();
 
   if (slotError || !slotRaw) {
@@ -57,15 +59,12 @@ export async function createBooking(input: unknown): Promise<ActionResult> {
     return { success: false, error: "Slot does not belong to this instructor" };
   }
 
-  // Calculate amounts (price per hour * duration in hours)
-  const startMinutes =
-    parseInt(slot.start_time.split(":")[0]) * 60 +
-    parseInt(slot.start_time.split(":")[1]);
-  const endMinutes =
-    parseInt(slot.end_time.split(":")[0]) * 60 +
-    parseInt(slot.end_time.split(":")[1]);
-  const durationHours = (endMinutes - startMinutes) / 60;
-  const totalAmount = Math.round(instructor.price_per_hour * durationHours);
+  // Calculate amounts
+  const totalAmount = calculateSlotPrice(
+    slot.start_time,
+    slot.end_time,
+    instructor.price_per_hour,
+  );
   const depositAmount = calculateDeposit(totalAmount);
   const platformFee = calculatePlatformFee(totalAmount);
 
@@ -187,7 +186,29 @@ export async function cancelBooking(
 
   const eligibleForRefund = hoursUntilLesson >= 48;
 
-  // Update booking status
+  // Process refund BEFORE marking cancelled — if refund fails, booking stays active
+  if (eligibleForRefund && cancelTarget.stripe_payment_intent_id) {
+    try {
+      const refund = await getStripe().refunds.create({
+        payment_intent: cancelTarget.stripe_payment_intent_id,
+      });
+
+      await db.from("payments").insert({
+        booking_id: bookingId,
+        type: "refund",
+        amount: cancelTarget.deposit_amount,
+        currency: cancelTarget.currency,
+        stripe_id: refund.id,
+      });
+    } catch {
+      return {
+        success: false,
+        error: "Refund failed. Please try again or contact support.",
+      };
+    }
+  }
+
+  // Update booking status only after successful refund (or no refund needed)
   await db
     .from("bookings")
     .update({
@@ -196,21 +217,6 @@ export async function cancelBooking(
       cancellation_reason: reason,
     })
     .eq("id", bookingId);
-
-  // Process refund if eligible and payment was made
-  if (eligibleForRefund && cancelTarget.stripe_payment_intent_id) {
-    const refund = await getStripe().refunds.create({
-      payment_intent: cancelTarget.stripe_payment_intent_id,
-    });
-
-    await db.from("payments").insert({
-      booking_id: bookingId,
-      type: "refund",
-      amount: cancelTarget.deposit_amount,
-      currency: cancelTarget.currency,
-      stripe_id: refund.id,
-    });
-  }
 
   return { success: true };
 }

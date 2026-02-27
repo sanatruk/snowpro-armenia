@@ -1,10 +1,18 @@
 import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase/server";
 
+function sanitizeRedirectPath(path: string): string {
+  // Only allow relative paths starting with / and no protocol tricks
+  if (!path.startsWith("/") || path.startsWith("//") || path.includes("://")) {
+    return "/";
+  }
+  return path;
+}
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/";
+  const next = sanitizeRedirectPath(searchParams.get("next") ?? "/");
 
   if (code) {
     const supabase = await createServerSupabase();

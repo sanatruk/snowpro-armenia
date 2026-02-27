@@ -2,22 +2,18 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { createServerSupabase } from "@/lib/supabase/server";
 import { ReviewForm } from "@/components/booking/review-form";
+import { formatTime } from "@/lib/time";
 
 type Props = {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ success?: string; cancelled?: string }>;
 };
 
-function formatTime(time: string): string {
-  const [h, m] = time.split(":");
-  const hour = parseInt(h);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const display = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-  return `${display}:${m} ${ampm}`;
-}
-
 const statusStyles: Record<string, { label: string; color: string }> = {
-  pending: { label: "Pending Payment", color: "bg-yellow-500/20 text-yellow-300" },
+  pending: {
+    label: "Pending Payment",
+    color: "bg-yellow-500/20 text-yellow-300",
+  },
   confirmed: { label: "Confirmed", color: "bg-green-500/20 text-green-300" },
   completed: { label: "Completed", color: "bg-blue-500/20 text-blue-300" },
   cancelled: { label: "Cancelled", color: "bg-red-500/20 text-red-300" },
@@ -63,14 +59,15 @@ export default async function BookingPage({ params, searchParams }: Props) {
     .single();
 
   const status = statusStyles[booking.status] ?? statusStyles.pending;
-  const formattedDate = new Date(
-    booking.date + "T00:00:00",
-  ).toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const formattedDate = new Date(booking.date + "T00:00:00").toLocaleDateString(
+    "en-US",
+    {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    },
+  );
 
   return (
     <div className="relative min-h-screen">
@@ -90,9 +87,7 @@ export default async function BookingPage({ params, searchParams }: Props) {
         <div className="rounded-2xl border border-white/5 bg-mountain-800/50 p-6 sm:p-8">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="font-display text-2xl font-bold">
-                Your Booking
-              </h1>
+              <h1 className="font-display text-2xl font-bold">Your Booking</h1>
               <p className="mt-1 text-sm text-mountain-600">
                 ID: {booking.id.slice(0, 8)}...
               </p>

@@ -21,8 +21,3 @@ export function calculatePlatformFee(totalAmount: number): number {
 export function calculateDeposit(totalAmount: number): number {
   return Math.round(totalAmount * 0.2);
 }
-
-// Convert AMD to smallest unit (AMD has no decimals, 1 AMD = 1 unit)
-export function amountToStripe(amountAMD: number): number {
-  return amountAMD;
-}

@@ -4,29 +4,11 @@ import { useState, useTransition } from "react";
 import type { Availability, Instructor } from "@/types/database";
 import { createBooking } from "@/app/actions/booking";
 import { calculateDeposit } from "@/lib/stripe";
+import { formatTime, calculateSlotPrice } from "@/lib/time";
 
 interface Props {
   readonly slot: Availability;
   readonly instructor: Instructor;
-}
-
-function formatTime(time: string): string {
-  const [h, m] = time.split(":");
-  const hour = parseInt(h);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const display = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-  return `${display}:${m} ${ampm}`;
-}
-
-function calculateTotal(
-  startTime: string,
-  endTime: string,
-  pricePerHour: number,
-): number {
-  const [sh, sm] = startTime.split(":").map(Number);
-  const [eh, em] = endTime.split(":").map(Number);
-  const durationHours = (eh * 60 + em - (sh * 60 + sm)) / 60;
-  return Math.round(pricePerHour * durationHours);
 }
 
 export function BookingSummary({ slot, instructor }: Props) {
@@ -34,7 +16,7 @@ export function BookingSummary({ slot, instructor }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const total = calculateTotal(
+  const total = calculateSlotPrice(
     slot.start_time,
     slot.end_time,
     instructor.price_per_hour,
@@ -134,16 +116,16 @@ export function BookingSummary({ slot, instructor }: Props) {
         />
       </div>
 
-      {error && (
-        <p className="mt-3 text-sm text-red-400">{error}</p>
-      )}
+      {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
 
       <button
         onClick={handleBook}
         disabled={isPending}
         className="mt-4 w-full rounded-xl bg-ice px-6 py-3.5 text-base font-semibold text-mountain transition-all hover:bg-ice-light hover:shadow-lg hover:shadow-ice/20 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isPending ? "Processing..." : `Pay ${deposit.toLocaleString()} AMD Deposit`}
+        {isPending
+          ? "Processing..."
+          : `Pay ${deposit.toLocaleString()} AMD Deposit`}
       </button>
 
       <p className="mt-3 text-center text-[11px] text-mountain-600">
