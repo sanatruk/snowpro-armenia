@@ -1,7 +1,6 @@
 export interface Resort {
   readonly slug: string;
   readonly name: string;
-  readonly nameArm: string;
   readonly tagline: string;
   readonly description: string;
   readonly elevation: { readonly base: number; readonly peak: number };
@@ -27,7 +26,6 @@ export const resorts: readonly Resort[] = [
   {
     slug: "tsaghkadzor",
     name: "Tsaghkadzor",
-    nameArm: "Ծաղկadzor",
     tagline:
       "Armenia's flagship resort — 30km of runs, 50 minutes from Yerevan",
     description:
@@ -60,7 +58,6 @@ export const resorts: readonly Resort[] = [
   {
     slug: "myler",
     name: "MyLer Mountain Resort",
-    nameArm: "MailLer",
     tagline:
       "Armenia's newest resort — modern lifts, extended season, uncrowded runs",
     description:
@@ -95,7 +92,6 @@ export const resorts: readonly Resort[] = [
   {
     slug: "jermuk",
     name: "Jermuk",
-    nameArm: " Джерmuk",
     tagline:
       "Gentle slopes + legendary hot springs — the perfect first-timer destination",
     description:

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import type { Metadata } from "next";
 import { instructors, type Sport } from "@/data/instructors";
 import { resorts } from "@/data/resorts";
 import { InstructorCard } from "@/components/instructor-card";
@@ -19,7 +18,7 @@ const initialFilters: FilterState = {
 };
 
 const allLanguages = Array.from(
-  new Set(instructors.flatMap((i) => i.languages))
+  new Set(instructors.flatMap((i) => i.languages)),
 ).sort();
 
 function FilterButton({
@@ -63,7 +62,7 @@ export default function InstructorsPage() {
         return false;
       if (
         filters.language !== "all" &&
-        !instructor.languages.includes(filters.language as never)
+        !instructor.languages.some((lang) => lang === filters.language)
       )
         return false;
       return true;
@@ -75,7 +74,7 @@ export default function InstructorsPage() {
   };
 
   const activeFilterCount = Object.values(filters).filter(
-    (v) => v !== "all"
+    (v) => v !== "all",
   ).length;
 
   return (
@@ -189,10 +188,7 @@ export default function InstructorsPage() {
           {filtered.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((instructor) => (
-                <InstructorCard
-                  key={instructor.id}
-                  instructor={instructor}
-                />
+                <InstructorCard key={instructor.id} instructor={instructor} />
               ))}
             </div>
           ) : (

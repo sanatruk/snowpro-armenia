@@ -4,6 +4,15 @@ import { getFeaturedInstructors } from "@/data/instructors";
 import { ResortCard } from "@/components/resort-card";
 import { InstructorCard } from "@/components/instructor-card";
 
+// Pre-computed particle positions to avoid hydration mismatch from Math.random()
+const SNOW_PARTICLES = Array.from({ length: 20 }, (_, i) => ({
+  size: 2 + ((i * 7 + 3) % 30) / 10,
+  left: (i * 37 + 13) % 100,
+  top: (i * 53 + 7) % 100,
+  duration: 3 + ((i * 11 + 5) % 40) / 10,
+  delay: ((i * 17 + 2) % 30) / 10,
+}));
+
 function MountainSVG() {
   return (
     <svg
@@ -28,19 +37,19 @@ function HeroSection() {
       <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-ice/5 blur-3xl" />
       <div className="absolute bottom-40 right-20 h-96 w-96 rounded-full bg-purple-500/5 blur-3xl" />
 
-      {/* Snow particles (decorative dots) */}
+      {/* Snow particles (deterministic to avoid hydration mismatch) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
+        {SNOW_PARTICLES.map((p, i) => (
           <div
             key={i}
             className="absolute rounded-full bg-white/20"
             style={{
-              width: `${2 + Math.random() * 3}px`,
-              height: `${2 + Math.random() * 3}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 3}s`,
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              animation: `float ${p.duration}s ease-in-out infinite`,
+              animationDelay: `${p.delay}s`,
             }}
           />
         ))}
